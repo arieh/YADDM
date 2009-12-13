@@ -42,14 +42,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE 
 */
 var YADDM = new Class({
-	Implements : [Options],
+	Implements : [Options, Events],
 	options:{
-		'className' : '.submenu'
+		'className' : '.submenu',
+		openFunction : $empty,
+		closeFunction : $empty
 	},
 	menues:$empty,
 	initialize: function(options){
 		
 		this.setOptions(options);
+	
+		if (this.options.openFunction === $empty) this.options.openFunction = this.openMenu;
+		if (this.options.closeFunction === $empty) this.options.closeFunction = this.closeMenu;
 		
 		this.menues = $$(this.options.className);
 		var fn = this.setEvents.bind(this);
@@ -62,13 +67,15 @@ var YADDM = new Class({
 			onMenu = false,
 			listHeight = parent.getFirst().getSize().y,
 			anchors = parent.getElements('a'),
-			self = this;
-			
-		self.hideElement(menu,true);
+			self = this,
+			hideFn = this.hideElement.bind(this),
+			showFn = this.show.bind(this);
+	
+		hideFn(menu);
 			  
 		parent.addEvent('mouseover',function(){
 			if (self.hidden(menu)){
-				self.show(menu,true);
+				showFn(menu);
 				parent.getFirst().setStyle('height',listHeight - ( menu.getStyle('border').toInt()*2 ) );
 			}
 			onParent = true;
@@ -76,7 +83,7 @@ var YADDM = new Class({
 				  
 		parent.addEvent('mouseout',function(){
 			if (!self.hidden(menu) && !onMenu){
-				self.hideElement(menu,true);
+				hideFn(menu);
 				parent.getFirst().setStyle('height',listHeight+'px');
 			} 
 			onParent = false;
@@ -91,37 +98,37 @@ var YADDM = new Class({
 		}));
 			  
 		anchors[0].addEvent('focus',function(e){
-			self.show(menu,true);
+			showFn(menu);
 		})
 		
 		anchors[anchors.length-1].addEvent('blur',function(e){
-			self.hideElement(menu,true);
+			hideFn(menu);
 		})
 		
 		parent.getPrevious().getElements('a').addEvent('focus',function(){
-			self.hideElement(menu,true);
+			hideFn(menu);
 		});
 	},
 	hideElement : function(el,vis){
-	    if (typeof vis == 'undefiend'){
-			el.store('lastDisplay' , el.getStyle('display'));
-	    	el.setStyle('display','none');	
-		}else if (vis){
-			el.setStyle('visibility','hidden');
-		}
+		el.removeClass('menu-opened');
+		el.addClass('menu-closed');
+		this.options.closeFunction(el);
+		this.fireEvent('close',el);
 	},
 	show : function(el,vis){
-		if (typeof vis == 'undefiend'){
-			var lastDisplay = el.retrieve('lastDisplay');
-			if (typeof lastDisplay =='undefined') 
-		        el.setStyle('display','block');
-		    else el.setStyle('display',lastDisplay);	
-		}else if (vis){
-			el.setStyle('visibility','visible');
-		}
+		el.removeClass('menu-closed');
+		el.addClass('menu-opened');
+		this.options.openFunction(el);
+		this.fireEvent('open',el);
 	},
 	hidden : function(el){
 		return ((el.getStyle('display')=='none') || (el.getStyle('visibility')=='hidden'));
+	},
+	openMenu : function(el){
+		el.setStyle('visibility','visible');
+	},
+	closeMenu : function(el){
+		el.setStyle('visibility','hidden');
 	}
 });
 
