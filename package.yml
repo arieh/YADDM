@@ -1,6 +1,6 @@
 name: YADDM
 author: arieh
 category: Interface
-tags: [menus, behavioral, utilities]
+tags: [menus, behavioral]
 demo: http://arieh.github.com/YADDM/
-current:0.2
+current: 0.2
