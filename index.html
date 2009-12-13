@@ -1,1 +1,80 @@
-"My GitHub Page" 
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+	<title>YADDM Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset='UTF-8'" />
+
+	<style type='text/css'>
+		#menu {list-style-type:none}
+		#menu li {float:left; font-size:smaller; font-weight:bolder;  text-align:center; margin:0;}
+		
+		acronym {border-bottom:dotted 1px black}
+		
+		#menu li a{background:#87B4E3;padding:0 5px; height:35px; display:block; color:black; line-height:35px; vertical-align:middle; }
+		#menu li a:hover{background:#c5e0f5}
+		#menu li a:focus{background:#c5e0f5}
+		
+		#menu li ul.submenu{position:absolute; list-style-type:none;	padding:0;	border:solid #3D74AC; border-width:0 1px 1px 1px;border-top:0;	background:#87B4E3; margin:0; overflow:hidden; visibility:hidden}
+		   #menu li  ul.submenu li{	display:block; float:none;	margin:0; text-align:left; vertical-align:middle;border-bottom:dotted #bbb 1px;	line-height:20px;}
+				#menu li  ul.submenu li a{background:#87B4E3;}
+				#menu li  ul.submenu li a:hover{background:#c5e0f5}
+				#menu li  ul.submenu li a:focus{background:#c5e0f5}
+	</style>
+</head>
+<body>
+<h1><acronym title='Yet Another Drop Down Menu'>YADDM</acronym> Demo Page</h1>
+<h2>A Keyboard Accessible Drop-Down Menu Plugin for Mootools</h2>
+
+<ul id='menu'>
+			<li class='menu-button-first'>
+				  <a tabindex="1" href='#'>
+					Articles</a> 
+			</li>
+
+			<li class='menu-button'>
+				<a tabindex="5" href='#'>
+					Search</a> 
+			</li>
+			<li class='menu-button' >
+				<a tabindex="6" href='#'>
+					Add</a>
+				<ul class='submenu' id='Add'>
+
+					<li class='menu-button'>
+						<a  tabindex="7" href='#'>
+							Add Article</a>
+					</li>  
+					<li class='menu-button'>
+						<a  tabindex="8" href='#'>
+							Add Section</a>
+					</li>  
+					<li class='menu-button'>
+
+						<a  tabindex="9" href='#'>
+							Add User</a>
+					</li>  
+				</ul> 
+			</li>
+			<li class='menu-button'>
+				<a tabindex="10" href='#'>
+					Feedback</a> 
+			</li>
+
+			<li class='menu-button-last'>
+				<a tabindex="11" href='#'>
+					Settings</a> 
+			</li>
+		</ul>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js'></script>
+<script type='text/javascript' src='../Source/YADDM.js'></script>
+<script type='text/javascript'>
+	
+	var dp =new DropDownMenu();
+	
+</script>
+
+</body>
+</html>
