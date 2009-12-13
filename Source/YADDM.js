@@ -126,5 +126,5 @@ var YADDM = new Class({
 });
 
 function setDropDownMenus(className){
-	return new YADDM({className:className});
+	return new YADDM({'className':className});
 }
