@@ -84,7 +84,6 @@ var YADDM = new Class({
 		parent.addEvent('mouseout',function(){
 			if (!menu.hasClass('menu-closed') && !onMenu){
 				hideFn(menu);
-				parent.getFirst().setStyle('height',listHeight+'px');
 			} 
 			onParent = false;
 		});
