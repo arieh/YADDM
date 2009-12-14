@@ -69,20 +69,20 @@ var YADDM = new Class({
 			anchors = parent.getElements('a'),
 			self = this,
 			hideFn = this.hideElement.bind(this),
-			showFn = this.show.bind(this);
+			showFn = this.show.bind(this),
+			perv;
 	
 		hideFn(menu);
 			  
 		parent.addEvent('mouseover',function(){
-			if (self.hidden(menu)){
+			if (menu.hasClass('menu-closed')){
 				showFn(menu);
-				parent.getFirst().setStyle('height',listHeight - ( menu.getStyle('border').toInt()*2 ) );
 			}
 			onParent = true;
 		});
 				  
 		parent.addEvent('mouseout',function(){
-			if (!self.hidden(menu) && !onMenu){
+			if (!menu.hasClass('menu-closed') && !onMenu){
 				hideFn(menu);
 				parent.getFirst().setStyle('height',listHeight+'px');
 			} 
@@ -105,9 +105,12 @@ var YADDM = new Class({
 			hideFn(menu);
 		})
 		
-		parent.getPrevious().getElements('a').addEvent('focus',function(){
-			hideFn(menu);
-		});
+		prev = parent.getPrevious();
+		if (prev){
+			prev.getElement('a').addEvent('focus',function(){
+				hideFn(menu);
+			});
+		}
 	},
 	hideElement : function(el,vis){
 		el.removeClass('menu-opened');
@@ -120,9 +123,6 @@ var YADDM = new Class({
 		el.addClass('menu-opened');
 		this.options.openFunction(el);
 		this.fireEvent('open',el);
-	},
-	hidden : function(el){
-		return ((el.getStyle('display')=='none') || (el.getStyle('visibility')=='hidden'));
 	},
 	openMenu : function(el){
 		el.setStyle('visibility','visible');
