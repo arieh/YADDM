@@ -6,8 +6,11 @@ It supplies a keyboard accessible dropdown menu. With it, you can navigate the m
 
 How to use
 ----------
-The class is very simple. you simply need to call it and it will generate a dropdown functionality on all marked 'UL's
-it assumes each li has exactly one anchor in it. sub-menues are neted 'UL's with specified class (default to 'submenu').
+The class is very simple. you simply need to call it and it will generate a dropdown functionality on all marked `UL`s
+it assumes each li has exactly one anchor in it. sub-menues are neted `UL`s with specified class (default to `submenu`).
+_NOTE: you can use whatever structure you would like, but you should note that the keyboard accessiblility assumes each menu item has an anchor in it. 
+i haven't tested it, but a missing anchor might break the class_
+
 You can either use the contructor:
 
 	#JS
@@ -27,12 +30,12 @@ Options
   
 Events
 -------
-  * 'open' : fires when a menu was opened. passes the menu element
-  * 'close' : same as above but for close
+  * `open` : fires when a menu was opened. passes the menu element
+  * `close` : same as above but for close
   
 CSS Classes
 ------------
 the Class assigns 2 css classes to it's element:
 
-  * 'menu-opened' : an opened menu
-  * 'menu-closed' : a closed menu
+  * `menu-opened` : an opened menu
+  * `menu-closed` : a closed menu
