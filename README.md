@@ -2,7 +2,7 @@ YADDM - Yet Another Drop-Down Menu
 =============
 YADDM stands for "Yet Another Drop-Down Menu". 
 It supplies a keyboard accessible dropdown menu. With it, you can navigate the menus, either by mouse or by using the tab/shift+tab keys.
-![Screenshot](http://github.com/arieh/YADDM/raw/master/screenshot.png)
+![Screenshot](http://img691.yfrog.com/i/screenshotsw.png/)
 
 How to use
 ----------
