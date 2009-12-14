@@ -13,7 +13,6 @@ requires:
 - core: 1.2.4/Element
 - core: 1.2.4/Element.Event
 - core: 1.2.4/Element.Style
-- core: 1.2.4/Element.Dimensions
 - core: 1.2.4/Selectors
 
 provides: YADDM
@@ -44,13 +43,16 @@ THE SOFTWARE
 var YADDM = new Class({
 	Implements : [Options, Events],
 	options:{
-		'className' : '.submenu',
-		openFunction : $empty,
-		closeFunction : $empty
+		'className' : '.submenu', //a class-name to identify sub-menus
+		openFunction : $empty, //a function to use for opening the menu
+		closeFunction : $empty //a function to use for closing the menu
 	},
 	menues:$empty,
+	/**
+	 * a constructor
+	 *   @param {Object} options an options array
+	 */
 	initialize: function(options){
-		
 		this.setOptions(options);
 	
 		if (this.options.openFunction === $empty) this.options.openFunction = this.openMenu;
@@ -60,20 +62,24 @@ var YADDM = new Class({
 		var fn = this.setEvents.bind(this);
 		this.menues.each(fn);
 	},
+	/**
+	 * sets the events on a given menu
+	 *  @param {Element} menu a menu element
+	 */
 	setEvents : function (menu){
 		var parent = menu.getParent(),
-			height = menu.getSize().y,
 			onParent = false,
 			onMenu = false,
-			listHeight = parent.getFirst().getSize().y,
 			anchors = parent.getElements('a'),
 			self = this,
 			hideFn = this.hideElement.bind(this),
-			showFn = this.show.bind(this),
+			showFn = this.showElement.bind(this),
 			perv;
 	
 		hideFn(menu);
-			  
+		
+		/* --Mouse Events	*/
+		
 		parent.addEvent('mouseover',function(){
 			if (menu.hasClass('menu-closed')){
 				showFn(menu);
@@ -95,7 +101,8 @@ var YADDM = new Class({
 		menu.addEvent('mouseout',(function(){
 			onMenu = false; 
 		}));
-			  
+		
+		/* --Keyboard Events */
 		anchors[0].addEvent('focus',function(e){
 			showFn(menu);
 		})
@@ -111,26 +118,48 @@ var YADDM = new Class({
 			});
 		}
 	},
-	hideElement : function(el,vis){
+	/**
+	 * hides an element
+	 *	@param {Element} el an element to hide
+	 */
+	hideElement : function(el){
 		el.removeClass('menu-opened');
 		el.addClass('menu-closed');
 		this.options.closeFunction(el);
 		this.fireEvent('close',el);
 	},
-	show : function(el,vis){
+	/**
+	 * shows an element
+	 *	@param {Element} el an element to show
+	 */
+	showElement : function(el){
 		el.removeClass('menu-closed');
 		el.addClass('menu-opened');
 		this.options.openFunction(el);
 		this.fireEvent('open',el);
 	},
+	/**
+	 * Default Opening effect
+	 *	@param {Element} el an element to open
+	 */
 	openMenu : function(el){
 		el.setStyle('visibility','visible');
 	},
+	/**
+	 * Default Closing effect
+	 *	@param {Element} el an element to close
+	 */
 	closeMenu : function(el){
 		el.setStyle('visibility','hidden');
 	}
 });
 
+/**
+ * an accessor to menu genaration
+ *	@param {String} className a class-name identfier for the sub-menus
+ * @return {YADDM} a YADDM instance
+ */
 function setDropDownMenus(className){
+	var name = (className == 'undefined') ? 'submenu' : className;
 	return new YADDM({'className':className});
 }
