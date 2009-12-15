@@ -142,16 +142,12 @@ var YADDM = new Class({
 	 * Default Opening effect
 	 *	@param {Element} el an element to open
 	 */
-	openMenu : function(el){
-		el.setStyle('visibility','visible');
-	},
+	openMenu : function(el){},
 	/**
 	 * Default Closing effect
 	 *	@param {Element} el an element to close
 	 */
-	closeMenu : function(el){
-		el.setStyle('visibility','hidden');
-	}
+	closeMenu : function(el){}
 });
 
 /**
