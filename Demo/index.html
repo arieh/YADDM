@@ -8,8 +8,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset='UTF-8'" />
 
 	<style type='text/css'>
-		#menu {list-style-type:none}
-		#menu li {float:left; font-size:smaller; font-weight:bolder;  text-align:center; margin:0;}
+		#menu {list-style-type:none; }
+		#menu li {float:left; font-size:smaller; font-weight:bolder;  text-align:center; margin:0; width:110px;}
 		
 		acronym {border-bottom:dotted 1px black}
 		
@@ -17,11 +17,14 @@
 		#menu li a:hover{background:#c5e0f5}
 		#menu li a:focus{background:#c5e0f5}
 		
-		#menu li ul.submenu{position:absolute; list-style-type:none;	padding:0;	border:solid #3D74AC; border-width:0 1px 1px 1px;border-top:0;	background:#87B4E3; margin:0; overflow:hidden; visibility:hidden}
-		   #menu li  ul.submenu li{	display:block; float:none;	margin:0; text-align:left; vertical-align:middle;border-bottom:dotted #bbb 1px;	line-height:20px;}
-				#menu li  ul.submenu li a{background:#87B4E3;}
-				#menu li  ul.submenu li a:hover{background:#c5e0f5}
-				#menu li  ul.submenu li a:focus{background:#c5e0f5}
+		ul.submenu{position:absolute;z-index:100; overflow:visible; list-style-type:none;	padding:0;	background:#87B4E3; margin:0;}
+		#menu ul.submenu li{display:block; float:none !important;	margin:0; text-align:left; vertical-align:middle; border-bottom:dotted #bbb 1px; line-height:20px;}
+				ul.submenu li a{background:#87B4E3;}
+				ul.submenu li a:hover{background:#c5e0f5}
+				ul.submenu li a:focus{background:#c5e0f5}
+			.submenu .submenu {position:absolute;z-index:150; left:110px;margin-top:-25px;}
+		menu-closed {visibility:hidden;}
+		menu-opened {visibility:visible;}
 	</style>
 </head>
 <body>
@@ -73,9 +76,26 @@
 					Feedback</a> 
 			</li>
 
-			<li class='menu-button-last'>
+			<li class='menu-button'>
 				<a tabindex="13" href='#'>
 					Settings</a> 
+				<ul class='submenu'>
+					<li>
+						<a href='#'>Personals</a>
+						<ul class='submenu'>
+							<li><a href='#'>Change Name</a></li>
+							<li><a href='#'>Change Email</a></li>
+							<li><a href='#'>Change Pass</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href='#'>Admin</a>
+						<ul class='submenu'>
+							<li><a href="#">Add User</a></li>
+							<li><a href='#'>Change Permissions</a></li>
+						</ul>
+					</li>
+				</ul>
 			</li>
 		</ul>
 <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js'></script>
