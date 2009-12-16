@@ -43,7 +43,7 @@ THE SOFTWARE
 var YADDM = new Class({
 	Implements : [Options, Events],
 	options:{
-		'className' : '.submenu', //a class-name to identify sub-menus
+		'className' : 'submenu', //a class-name to identify sub-menus
 		openFunction : $empty, //a function to use for opening the menu
 		closeFunction : $empty //a function to use for closing the menu
 	},
@@ -58,7 +58,7 @@ var YADDM = new Class({
 		if (this.options.openFunction === $empty) this.options.openFunction = this.openMenu;
 		if (this.options.closeFunction === $empty) this.options.closeFunction = this.closeMenu;
 		
-		this.menues = $$(this.options.className);
+		this.menues = $$('.'+this.options.className);
 		var fn = this.setEvents.bind(this);
 		this.menues.each(fn);
 	},
@@ -74,6 +74,7 @@ var YADDM = new Class({
 			self = this,
 			hideFn = this.hideElement.bind(this),
 			showFn = this.showElement.bind(this),
+			tab = false, shift = false,
 			perv;
 	
 		hideFn(menu);
@@ -89,6 +90,7 @@ var YADDM = new Class({
 				  
 		parent.addEvent('mouseout',function(){
 			if (!menu.hasClass('menu-closed') && !onMenu){
+				menu.getElements('.'+self.options.className).each(function(m){hideFn(m);});
 				hideFn(menu);
 			} 
 			onParent = false;
@@ -103,18 +105,38 @@ var YADDM = new Class({
 		}));
 		
 		/* --Keyboard Events */
+		
+		/*
+		 * Focus on first sub-menu element
+		 */
 		anchors[0].addEvent('focus',function(e){
 			showFn(menu);
 		})
 		
+		/*
+		 * Tab on last menu element
+		 */
 		anchors[anchors.length-1].addEvent('blur',function(e){
 			hideFn(menu);
 		})
 		
+		/*
+		 * Shift+Tab on first sub-menu element
+		 */
 		prev = parent.getPrevious();
 		if (prev){
 			prev.getElement('a').addEvent('focus',function(){
 				hideFn(menu);
+			});
+		}else{
+			anchors[0].addEvent('keydown',function(e){
+				if (e.key == 'tab') tab = true;
+				if (e.code == 16 || e.key == 'shift') shift = true;
+				if (tab && shift) hideFn(menu);
+			});
+			anchors[0].addEvent('keyup',function(e){
+				if (e.key == 'tab') tab = false;
+				if (e.code == 16 || e.key == 'shift') shift = false;
 			});
 		}
 		
@@ -123,7 +145,6 @@ var YADDM = new Class({
 		});
 		
 		menu.addEvent('click',function(e){e.stopPropagation();});
-		
 	},
 	/**
 	 * hides an element
