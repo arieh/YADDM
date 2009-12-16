@@ -117,6 +117,13 @@ var YADDM = new Class({
 				hideFn(menu);
 			});
 		}
+		
+		document.addEvent('click',function(){
+			hideFn(menu);
+		});
+		
+		menu.addEvent('click',function(e){e.stopPropagation();});
+		
 	},
 	/**
 	 * hides an element
