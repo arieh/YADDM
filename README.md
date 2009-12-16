@@ -5,6 +5,7 @@ It supplies a keyboard accessible dropdown menu. With it, you can navigate the m
 
 ![Screenshot](http://img691.imageshack.us/img691/4562/screenshotsw.png)
 
+Tested and found working on FF 3.5, IE6-8, and Chrome 3
 How to use
 ----------
 The class is very simple. you simply need to call it and it will generate a dropdown functionality on all marked `UL`s
@@ -21,6 +22,12 @@ Or use the supplied function:
 	
 	#JS
 	setDropDownMenus('alternative-classname');
+
+Knows Issues
+-------------
+
+  * Using Shit+Tab on last Subemenu item will result in unfocused menu (behaviour changes between different browsers)
+  * As for as I've noticed, Safari (mine is 4.0.4) doesn't support Tab-Browsing. Sience the Class relies on browser anchor tab-browsing it will not work on browsers that do not allow it. if you know of other ways to tab between anchors in Safari please let me know.
 
 Options
 ---------
