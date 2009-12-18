@@ -17,7 +17,7 @@
 		#menu li a:hover{background:#c5e0f5}
 		#menu li a:focus{background:#c5e0f5}
 		
-		ul.submenu{position:absolute;z-index:100; overflow:visible; list-style-type:none;	padding:0;	background:#87B4E3; margin:0; visibility:hidden}
+		ul.submenu{position:absolute;z-index:100; overflow:visible; list-style-type:none;	padding:0;	background:#87B4E3; margin:0;}
 		#menu ul.submenu li{display:block; float:none !important;	margin:0; text-align:left; vertical-align:middle; border-bottom:dotted #bbb 1px; line-height:20px;}
 				ul.submenu li a{background:#87B4E3;}
 				ul.submenu li a:hover{background:#c5e0f5}
@@ -35,6 +35,10 @@
 			<li class='menu-button-first'>
 				  <a tabindex="1" href='#'>
 					Articles</a> 
+				<ul class='submenu' >
+					<li><a href='#' tabindex='2'>Sitebuilding</a></li>
+					<li><a href='#' tabindex='3'>Javascript</a></li>
+				</ul>
 			</li>
 
 			<li class='menu-button'>
@@ -99,9 +103,10 @@
 			</li>
 		</ul>
 <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js'></script>
-<script type='text/javascript' src='http://github.com/arieh/YADDM/raw/master/Source/YADDM.js'></script>
+<script type='text/javascript' src='../Source/YADDM.js'></script>
 <script type='text/javascript'>
 	var dp = new YADDM();
 </script>
+
 </body>
 </html>
