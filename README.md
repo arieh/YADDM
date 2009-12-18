@@ -5,7 +5,8 @@ It supplies a keyboard accessible dropdown menu. With it, you can navigate the m
 
 ![Screenshot](http://img691.imageshack.us/img691/4562/screenshotsw.png)
 
-Tested and found working on FF 3.5, IE6-8, and Chrome 3
+Tested and found working on FF 3.5, IE6-8, Safari 4 (read notes) and Chrome 3
+
 How to use
 ----------
 The class is very simple. you simply need to call it and it will generate a dropdown functionality on all marked `UL`s
@@ -25,9 +26,10 @@ Or use the supplied function:
 
 Knows Issues
 -------------
-
-  * Using Shit+Tab on last Subemenu item will result in unfocused menu (behaviour changes between different browsers)
-  * As for as I've noticed, Safari (mine is 4.0.4) doesn't support Tab-Browsing. Sience the Class relies on browser anchor tab-browsing it will not work on browsers that do not allow it. if you know of other ways to tab between anchors in Safari please let me know.
+  * The library assumes standart keyboard support using Tag / Shift+Tab to navigate between anchors for it's keyboard support. This means 2 things: 1. If a browser has different shortcuts, they should work almost completetly. 2. if the browser does not have these the keyboard functionality will not work.
+  * Using Shit+Tab on last Subemenu item will result in unfocused menu (behaviour changes between different browser
+  * Safari requiers that you enable tab browsing through 'Prefrences' > 'Advanced' > 'Press Tab to highlight each item on a web page'
+  * For browser with different shortcuts, there will be an issue if you try to unfocus a menu who's handle is the first anchor on the menu-bar using the Shift+Tab alternative.   
 
 Options
 ---------
