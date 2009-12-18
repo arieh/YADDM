@@ -130,12 +130,12 @@ var YADDM = new Class({
 			});
 		}else{
 			anchors[0].addEvent('keydown',function(e){
-				if (e.key == 'tab') tab = true;
+				if (e.code == 9) tab = true;
 				if (e.code == 16 || e.key == 'shift') shift = true;
 				if (tab && shift) hideFn(menu);
 			});
 			anchors[0].addEvent('keyup',function(e){
-				if (e.key == 'tab') tab = false;
+				if (e.code == 9) tab = false;
 				if (e.code == 16 || e.key == 'shift') shift = false;
 			});
 		}
@@ -151,6 +151,8 @@ var YADDM = new Class({
 	 *	@param {Element} el an element to hide
 	 */
 	hideElement : function(el){
+		var hideFn =this.hideElement.bind(this);
+		el.getElements('.'+this.options.className).each(hideFn);
 		el.removeClass('menu-opened');
 		el.addClass('menu-closed');
 		this.options.closeFunction(el);
