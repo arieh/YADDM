@@ -30,6 +30,7 @@ YADDM Events {#YADDM:events}
 YADDM CSS Classes 
 ------------------
 The class assigns 2 CSS classes to it's elements as means to identify them:
+
 1. `menu-opened` : an opened menu
 2. `menu-closed` : a closed menu
 
