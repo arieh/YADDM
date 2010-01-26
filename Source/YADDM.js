@@ -74,8 +74,7 @@ var YADDM = new Class({
 			self = this,
 			hideFn = this.hideElement.bind(this),
 			showFn = this.showElement.bind(this),
-			tab = false, shift = false,
-			perv;
+			tab = false, shift = false;
 	
 		hideFn(menu);
 		
@@ -111,14 +110,14 @@ var YADDM = new Class({
 		 */
 		anchors[0].addEvent('focus',function(e){
 			showFn(menu);
-		})
+		});
 		
 		/*
 		 * Tab on last menu element
 		 */
 		anchors[anchors.length-1].addEvent('blur',function(e){
 			hideFn(menu);
-		})
+		});
 		
 		/*
 		 * Shift+Tab on first sub-menu element
@@ -187,5 +186,5 @@ var YADDM = new Class({
  */
 function setDropDownMenus(className){
 	var name = (className == 'undefined') ? 'submenu' : className;
-	return new YADDM({'className':className});
+	return new YADDM({'className':name});
 }
