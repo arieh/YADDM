@@ -82,9 +82,9 @@ var YADDM = new Class({
 			onParent = true;
 		});
 				  
-		parent.addEvent('mouseout',function(e){
-			var evt = e || window.event;
-			if (!menu.hasClass($(e).toElement) && !onMenu){
+		parent.addEvent('mouseout',function(evt){
+			evt = window.event || evt;
+			if (!menu.hasClass(evt.toElement) && !onMenu){
 				menu.getElements('menu-opened').each(function(m){hideFn(m);});
 				hideFn(menu);
 			} 
@@ -96,7 +96,7 @@ var YADDM = new Class({
 		});     
 			
 		menu.addEvent('mouseout',(function(){
-			onMenu = false; 
+			onMenu = false;
 		}));
 		
 		/* --Keyboard Events */
