@@ -82,9 +82,10 @@ var YADDM = new Class({
 			onParent = true;
 		});
 				  
-		parent.addEvent('mouseout',function(){
-			if (!menu.hasClass('menu-closed') && !onMenu){
-				menu.getElements('.'+self.options.className).each(function(m){hideFn(m);});
+		parent.addEvent('mouseout',function(e){
+			var evt = e || window.event;
+			if (!menu.hasClass($(e).toElement) && !onMenu){
+				menu.getElements('menu-opened').each(function(m){hideFn(m);});
 				hideFn(menu);
 			} 
 			onParent = false;
