@@ -148,7 +148,7 @@ var YADDM = new Class({
 					if (e.code == 9) tab = false;
 					if (e.code == 16 || e.key == 'shift') shift = false;
 				});
-			)()
+			})();
 		}
 		
 		document.addEvent('click',function(){
