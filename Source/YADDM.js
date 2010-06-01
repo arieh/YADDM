@@ -43,6 +43,7 @@ var YADDM = new Class({
 		closeFunction : $empty //a function to use for closing the menu
 	},
 	menues:$empty,
+	lastMenu : null,
 	/**
 	 * a constructor
 	 *   @param {Object} options an options array
@@ -68,11 +69,10 @@ var YADDM = new Class({
 			anchors = parent.getElements('a'),
 			self = this,
 			hideFn = this.hideElement.bind(this),
-			showFn = this.showElement.bind(this),
-			tab = false, shift = false;
+			showFn = this.showElement.bind(this);
 	
-		hideFn(menu);
-		
+		if (!menu.hasClass('menu-opened')) hideFn(menu);
+
 		/* --Mouse Events	*/
 		
 		parent.addEvent('mouseover',function(){
@@ -111,28 +111,44 @@ var YADDM = new Class({
 		/*
 		 * Tab on last menu element
 		 */
-		anchors[anchors.length-1].addEvent('blur',function(e){
-			hideFn(menu);
-		});
+		if (anchors.length>1) (function(){
+			var shift = false
+				, tab = false;
+			
+			anchors[anchors.length-1].addEvents({
+				'keydown' : function(e){
+					if (e.code == 9) tab = true;
+					if (e.code == 16 || e.key == 'shift') shift = true;
+					if (!shift && tab) hideFn(menu);
+				}
+				,'keyup': function(e){
+					if (e.code == 9) tab = false;
+					if (e.code == 16 || e.key == 'shift') shift = false;
+				}
+			});
+		})()
 		
 		/*
 		 * Shift+Tab on first sub-menu element
 		 */
 		prev = parent.getPrevious();
-		if (prev){
+		if (prev && prev.getElement('a')){
 			prev.getElement('a').addEvent('focus',function(){
 				hideFn(menu);
 			});
 		}else{
-			anchors[0].addEvent('keydown',function(e){
-				if (e.code == 9) tab = true;
-				if (e.code == 16 || e.key == 'shift') shift = true;
-				if (tab && shift) hideFn(menu);
-			});
-			anchors[0].addEvent('keyup',function(e){
-				if (e.code == 9) tab = false;
-				if (e.code == 16 || e.key == 'shift') shift = false;
-			});
+			(function(){
+				var tab = false, shift = false;
+				anchors[0].addEvent('keydown',function(e){
+					if (e.code == 9) tab = true;
+					if (e.code == 16 || e.key == 'shift') shift = true;
+					if (tab && shift) hideFn(menu);
+				});
+				anchors[0].addEvent('keyup',function(e){
+					if (e.code == 9) tab = false;
+					if (e.code == 16 || e.key == 'shift') shift = false;
+				});
+			)()
 		}
 		
 		document.addEvent('click',function(){
@@ -146,7 +162,8 @@ var YADDM = new Class({
 	 *	@param {Element} el an element to hide
 	 */
 	hideElement : function(el){
-		var hideFn =this.hideElement.bind(this);
+		var hideFn = this.hideElement.bind(this);
+		
 		el.getElements('.'+this.options.className).each(hideFn);
 		el.removeClass('menu-opened');
 		el.addClass('menu-closed');
@@ -158,6 +175,13 @@ var YADDM = new Class({
 	 *	@param {Element} el an element to show
 	 */
 	showElement : function(el){
+		var hideFn = this.hideElement.bind(this);
+		
+		if (this.lastMenu && this.lastMenu!=el){
+			hideFn(this.lastMenu);
+			this.lastMenu = el;
+		}else if (!this.lastMenu) this.lastMenu = el;
+		
 		el.removeClass('menu-closed');
 		el.addClass('menu-opened');
 		this.options.openFunction(el);
