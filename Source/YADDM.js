@@ -43,12 +43,13 @@ var YADDM = new Class({
 		closeFunction : $empty //a function to use for closing the menu
 	},
 	menues:$empty,
-	lastMenu : null,
+	lastMenu : null
+	,timeout : null
 	/**
 	 * a constructor
 	 *   @param {Object} options an options array
 	 */
-	initialize: function(options){
+	,initialize: function(options){
 		this.setOptions(options);
 	
 		if (this.options.openFunction === $empty) this.options.openFunction = this.openMenu;
@@ -70,9 +71,9 @@ var YADDM = new Class({
 			self = this,
 			hideFn = this.hideElement.bind(this),
 			showFn = this.showElement.bind(this);
-	
+		
 		if (!menu.hasClass('menu-opened')) hideFn(menu);
-
+		else this.lastMenu = menu;
 		/* --Mouse Events	*/
 		
 		parent.addEvent('mouseover',function(){
@@ -83,15 +84,14 @@ var YADDM = new Class({
 		});
 				  
 		parent.addEvent('mouseout',function(evt){
-			evt = window.event || evt;
-			if (!menu.hasClass(evt.toElement) && !onMenu){
+			if (!menu.hasClass('menu-closed') && !onMenu){
 				menu.getElements('menu-opened').each(function(m){hideFn(m);});
 				hideFn(menu);
 			} 
 			onParent = false;
 		});
 				  
-		menu.addEvent('mouover',function(){
+		menu.addEvent('mouseover',function(){
 			onMenu = true;
 		});     
 			
@@ -119,7 +119,9 @@ var YADDM = new Class({
 				'keydown' : function(e){
 					if (e.code == 9) tab = true;
 					if (e.code == 16 || e.key == 'shift') shift = true;
-					if (!shift && tab) hideFn(menu);
+					if (!shift && tab){
+						hideFn(menu);
+					}
 				}
 				,'keyup': function(e){
 					if (e.code == 9) tab = false;
@@ -163,7 +165,6 @@ var YADDM = new Class({
 	 */
 	hideElement : function(el){
 		var hideFn = this.hideElement.bind(this);
-		
 		el.getElements('.'+this.options.className).each(hideFn);
 		el.removeClass('menu-opened');
 		el.addClass('menu-closed');
@@ -177,7 +178,7 @@ var YADDM = new Class({
 	showElement : function(el){
 		var hideFn = this.hideElement.bind(this);
 		
-		if (this.lastMenu && this.lastMenu!=el){
+		if (this.lastMenu && this.lastMenu!=el){			
 			hideFn(this.lastMenu);
 			this.lastMenu = el;
 		}else if (!this.lastMenu) this.lastMenu = el;
