@@ -1,7 +1,15 @@
 YADDM - Yet Another Drop-Down Menu
 =============
 YADDM stands for "Yet Another Drop-Down Menu". 
-It supplies a keyboard accessible dropdown menu. With it, you can navigate the menus, either by mouse or by using the tab/shift+tab keys.
+
+It supplies an *interface* for creating keyboard and mouse accessible drop-down menus. 
+This means the class handles all related events, but it *does not* supply any open/close effects, ony hooks for supplying them:
+
+1. CSS class based effects.
+2. Supply an open/close functions to the constructor
+3. Use the class's events.
+
+The supplied demo shows how to use these. 
 
 ![Screenshot](http://img691.imageshack.us/img691/4562/screenshotsw.png)
 
@@ -34,9 +42,9 @@ Knows Issues
 Options
 ---------
 
-  * className : an alternative class-name to identify the submenus with
-  * openFunction : an alternative function to use for opening effect. recieves one paramater- the menu to be opened
-  * closeFunction : same as above but for close
+  * className (`string`) : an alternative class-name to identify the submenus with
+  * openFunction (`Function`: defaults to `$empty`): an alternative function to use for opening effect. recieves one paramater- the menu to be opened
+  * closeFunction (`Function`: defaults to `$empty`): same as above but for close
   
 Events
 -------
