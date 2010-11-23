@@ -35,16 +35,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE 
 */
-var YADDM = new Class({
-	Implements : [Options, Events],
-	options:{
+(function($,$empty,undef){
+
+YADDM = new Class({
+	Implements : [Options, Events]
+	,options:{
 		'className' : 'submenu', //a class-name to identify sub-menus
 		openFunction : $empty, //a function to use for opening the menu
 		closeFunction : $empty //a function to use for closing the menu
-	},
-	menues:$empty,
-	lastMenu : null
-	,timeout : null
+		,rtl : false
+	}
+	, menues:$empty
+	, lastMenu : null
+	, timeout : null
+	, parents : []
+	, current : -1
 	/**
 	 * a constructor
 	 *   @param {Object} options an options array
@@ -58,19 +63,21 @@ var YADDM = new Class({
 		this.menues = $$('.'+this.options.className);
 		var fn = this.setEvents.bind(this);
 		this.menues.each(fn);
-	},
+	}
 	/**
 	 * sets the events on a given menu
 	 *  @param {Element} menu a menu element
 	 */
-	setEvents : function (menu){
-		var parent = menu.getParent(),
-			onParent = false,
-			onMenu = false,
-			anchors = parent.getElements('a'),
-			self = this,
-			hideFn = this.hideElement.bind(this),
-			showFn = this.showElement.bind(this);
+	,setEvents : function (menu){
+		var $this = this
+		  , parent = menu.getParent()
+	      , onParent = false
+		  , onMenu = false
+		  , anchors = parent.getElements('a')
+		  , hideFn = this.hideElement.bind(this)
+		  , showFn = this.showElement.bind(this);
+		
+		this.parents.push(parent);
 		
 		if (!menu.hasClass('menu-opened')) hideFn(menu);
 		else this.lastMenu = menu;
@@ -128,7 +135,7 @@ var YADDM = new Class({
 					if (e.code == 16 || e.key == 'shift') shift = false;
 				}
 			});
-		})()
+		})();
 		
 		/*
 		 * Shift+Tab on first sub-menu element
@@ -158,24 +165,52 @@ var YADDM = new Class({
 		});
 		
 		menu.addEvent('click',function(e){e.stopPropagation();});
-	},
+		
+		menu.addEvent('keyup',function(e){
+			if (e.code == 39){
+				if ($this.options.rtl) $this.prevParent();
+				else $this.nextParent();
+                e.stopPropagation();
+			}else if (e.code == 37){
+                if ($this.options.rtl) $this.nextParent();
+                else $this.prevParent();
+                e.stopPropagation();
+			}
+		});
+
+		parent.getElement('a').addEvent('keyup',function(e){
+			if (e.code == 39){
+                if ($this.options.rtl) $this.prevParent($this.parents.indexOf(parent));
+                else{
+					$this.nextParent($this.parents.indexOf(parent));
+				} 
+                e.stopPropagation($this.parents.indexOf(parent));
+            }else if (e.code == 37){
+                
+				if ($this.options.rtl) $this.nextParent($this.parents.indexOf(parent));
+                else $this.prevParent($this.parents.indexOf(parent));
+                e.stopPropagation();
+            }
+        });
+	}
 	/**
 	 * hides an element
 	 *	@param {Element} el an element to hide
 	 */
-	hideElement : function(el){
+	,hideElement : function(el){
 		var hideFn = this.hideElement.bind(this);
 		el.getElements('.'+this.options.className).each(hideFn);
 		el.removeClass('menu-opened');
 		el.addClass('menu-closed');
 		this.options.closeFunction(el);
 		this.fireEvent('close',el);
-	},
+		if (this.current = this.menues.indexOf(el)) this.current = -1;
+	}
 	/**
 	 * shows an element
 	 *	@param {Element} el an element to show
 	 */
-	showElement : function(el){
+	,showElement : function(el){
 		var hideFn = this.hideElement.bind(this);
 		
 		if (this.lastMenu && this.lastMenu!=el){			
@@ -187,18 +222,44 @@ var YADDM = new Class({
 		el.addClass('menu-opened');
 		this.options.openFunction(el);
 		this.fireEvent('open',el);
-	},
+		this.current = this.menues.indexOf(el);
+	}
 	/**
 	 * Default Opening effect
 	 *	@param {Element} el an element to open
 	 */
-	openMenu : function(el){},
+	,openMenu : function(el){}
 	/**
 	 * Default Closing effect
 	 *	@param {Element} el an element to close
 	 */
-	closeMenu : function(el){}
+	,closeMenu : function(el){}
+	,nextParent : function(cur){
+		var $this = this
+          , hideFn = this.hideElement.bind(this)
+          , showFn = this.showElement.bind(this);
+		  
+	    if (cur >-1 && cur < this.menues.length){
+			hideFn(this.menues[cur++]);
+			showFn(this.menues[cur]);
+			this.menues[cur].getElement('a').focus();
+			this.current = cur;
+		} 
+	}
+	,prevParent : function(cur){
+        var $this = this
+          , hideFn = this.hideElement.bind(this)
+          , showFn = this.showElement.bind(this);
+        if (cur <this.menues.length && cur > -1 ){
+            hideFn(this.menues[cur--]);
+            showFn(this.menues[cur]);
+            this.menues[cur].getElement('a').focus();
+			this.current = cur;
+        } 
+    }
 });
+
+})(document.id,Function.create());
 
 /**
  * an accessor to menu genaration
