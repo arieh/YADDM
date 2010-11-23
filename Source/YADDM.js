@@ -8,7 +8,7 @@ authors:
 - Arieh Glazer
 
 requires:
-- core/1.2.4: [Class,Class.Extras, Element, Element.Event, Element.Style, Selectors]
+- core/1.3: [Class,Class.Extras, Element, Element.Event, Element.Style, Selectors]
 
 provides: YADDM
 
